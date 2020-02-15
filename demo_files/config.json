@@ -1,0 +1,8 @@
+{
+	"api_url": "your_instance_url",
+	"api_username": "your_username",
+	"api_password": "your_password",
+	"input_csv": "test_archivesspace_update.csv",
+	"output_csv": "test_archivesspace_output.csv",
+	"backup_directory": "test_archivesspace_backup"
+}
