@@ -47,13 +47,18 @@ demo_files user$ python hello_world.py
 
 ...stuff happens...
 
+demo files user$
 ```
 
 ## Connecting to ArchivesSpace via `requests`
 
-To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST instance for the api_url value). Then open a python interpreter session and enter the following into the interpreter (be sure that you are still in the `demo_files` directory before you open the interpreter):
+To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST API URL for the api_url value - ask Alicia if you don't know the URL). Then enter the following into the Anaconda Prompt/Powershell (be sure that you are still in the `demo_files` directory before you open the interpreter):
 
 ```
+demo_files user$ python
+Python 3.7.3 (default, Mar 27 2019, 16:54:48) 
+[Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda custom (64-bit) on darwin
+Type "help", "copyright", "credits" or "license" for more information.
 >>> import json
 >>> import requests
 >>> import archivesspace_login as as_login
@@ -81,8 +86,6 @@ If your login credentials are invalid you should be prompted to enter them again
 A JSON template for a resource looks like this:
 
 ```
-
-
 
 ```
 
