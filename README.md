@@ -39,7 +39,7 @@ To close the Python interpreter and return to the prompt, enter `quit()`
 
 ## Running Python scripts from the command line
 
-You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, enter the following into the Anaconda Prompt:
+You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, open the Anaconda Prompt/Powershell and do the following:
 
 ```
 user$ cd C:\Users\your_username\path\to\api_environment_setup\demo_files
@@ -52,7 +52,7 @@ demo_files user$
 
 ## Connecting to ArchivesSpace via `requests`
 
-To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST API URL for the api_url value - ask Alicia if you don't know the URL). Then enter the following into the Anaconda Prompt/Powershell (be sure that you are still in the `demo_files` directory before you open the interpreter):
+To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST API URL for the api_url value - ask Alicia if you don't know the URL). Then open the Anaconda Prompt/Powershell (be sure that you are still in the `demo_files` directory before you open the interpreter) and do the following:
 
 ```
 demo_files user$ python
