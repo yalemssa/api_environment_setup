@@ -47,7 +47,7 @@ demo_files user$ python hello_world.py
 
 ...stuff happens...
 
-demo files user$
+demo_files user$
 ```
 
 ## Connecting to ArchivesSpace via `requests`
