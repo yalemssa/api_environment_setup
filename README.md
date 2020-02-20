@@ -12,7 +12,9 @@ To get started, clone or download this repository.
 
 ## Why Miniconda?
 
-While many computers come with Python built-in, it is often many versions behind the latest release. Also, installing or upgrading Python packages in the system installation of Python can cause unexpected conflicts and errors within existing programs. It is highly recommended that you use a virtual environment to avoid these issues. There are many varieties of virtual environments, each with their own benefits and drawbacks. Anaconda and Miniconda are frequently used by data scientists and others who work with data (such as archivists!), and they come with frequently-used data processing packages preinstalled. Miniconda is a lightweight version of Anaconda, and both are based on `conda`. A good intro to `conda` can be found [here](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307).
+While many computers come with Python built-in, it is often many versions behind the latest release. Also, installing or upgrading Python packages in the system installation of Python can cause unexpected conflicts and errors within existing programs. It is highly recommended that you use a virtual environment to avoid these issues. 
+
+There are many varieties of virtual environments, each with their own benefits and drawbacks. Anaconda and Miniconda are frequently used by data scientists and others who work with data (such as archivists!), and they come with frequently-used data processing packages preinstalled. Miniconda is a lightweight version of Anaconda, and both are based on `conda`. A good intro to `conda` can be found [here](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307).
 
 ## Installing Miniconda
 
@@ -37,11 +39,19 @@ To close the Python interpreter and return to the prompt, enter `quit()`
 
 ## Running Python scripts from the command line
 
-You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, `cd` to the `demo_files` directory in the prompt and type `python hello_world.py`.
+You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, enter the following into the Anaconda Prompt:
+
+```
+user$ cd C:\Users\your_username\path\to\api_environment_setup\demo_files
+demo_files user$ python hello_world.py
+
+...stuff happens...
+
+```
 
 ## Connecting to ArchivesSpace via `requests`
 
-To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory. Then open a python interpreter session and enter the following into the interpreter (be sure that you are in the `demo_files` directory before you open the interpreter):
+To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST instance for the api_url value). Then open a python interpreter session and enter the following into the interpreter (be sure that you are still in the `demo_files` directory before you open the interpreter):
 
 ```
 >>> import json
