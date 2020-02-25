@@ -1,7 +1,7 @@
 {
-	"api_url": "your_instance_url",
-	"api_username": "your_username",
-	"api_password": "your_password",
+	"api_url": "https://testarchivesspace.library.yale.edu/api",
+	"api_username": "amd243",
+	"api_password": "FFmIjc5xLw",
 	"input_csv": "test_archivesspace_update.csv",
 	"output_csv": "test_archivesspace_output.csv",
 	"backup_directory": "test_archivesspace_backup"

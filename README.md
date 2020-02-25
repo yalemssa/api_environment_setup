@@ -65,35 +65,143 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> api_url, headers = as_login.login()
 Login successful!
 >>> api_url
-https://archivesspace.univesity.edu
+https://archivesspace.university.edu/api
 >>> headers
 LONGSTRINGOFNUMBERSANDLETTERSREPRESENTINGAUTHKEY
 ```
 
-If your login credentials are invalid you should be prompted to enter them again into the interpreter. If your login credentials were accepted, you can send your first request to the ArchivesSpace API by entering the following into the Python interpreter:
+If your login credentials are invalid you should be prompted to enter them again into the interpreter. If your login credentials were accepted, you can send your first API request - to retrieve a top container JSON record - by entering the following into the Python interpreter:
 
 ```
->>> repo_id = <YOUR ARCHIVESSPACE REPOSITORY ID>
->>> list_of_resources = requests.get(f"{api_url}/repositories/{repo_id}/resources", headers=headers).json()
->>> print(list_of_resources)
-{
-	list of resources
-}
+>>> import pprint
+>>> top_container_uri = <URI of top container record>
+>>> top_container_json = requests.get(f"{api_url}/{top_container_uri}", headers=headers).json()
+>>> pprint.pprint(top_container_json)
+{'active_restrictions': [],
+ 'barcode': '39002102377802',
+ 'collection': [{'display_string': 'Rights and Wrongs records',
+                 'identifier': 'MS 1821',
+                 'ref': '/repositories/12/resources/4869'}],
+ 'container_locations': [],
+ 'container_profile': {'ref': '/container_profiles/113'},
+ 'create_time': '2016-10-14T19:31:11Z',
+ 'created_by': 'cconnoll',
+ 'display_string': 'Box 153D: Series 4 [39002102377802]',
+ 'ils_holding_id': '6879939',
+ 'indicator': '153D',
+ 'is_linked_to_published_record': True,
+ 'jsonmodel_type': 'top_container',
+ 'last_modified_by': 'amd243',
+ 'lock_version': 7,
+ 'long_display_string': 'MS 1821, Series 4, Box 153D [39002102377802], video '
+                        'Beta',
+ 'repository': {'ref': '/repositories/12'},
+ 'restricted': True,
+ 'series': [{'display_string': 'Programs, 1993-1996',
+             'identifier': '4',
+             'level_display_string': 'Series',
+             'publish': True,
+             'ref': '/repositories/12/archival_objects/2012461'}],
+ 'system_mtime': '2019-10-29T12:53:50Z',
+ 'type': 'Box',
+ 'uri': '/repositories/12/top_containers/239815',
+ 'user_mtime': '2018-09-28T13:04:43Z'}
+
 ```
 
-## Creating and retrieving an ArchivesSpace resource record
+Top containers and all other "top level" ArchivesSpace records (a very brief overview of "top level" records and the AS data model can be found in the second section of this [article](https://journal.code4lib.org/articles/14443)) can be accessed via the API by unique URIs, which correspond with their database identifiers. Top containers are scoped to repositories, and so the URI also includes the repository number, for instance `/repositories/12/top_containers/32918`. See the ArchivesSpace API documentation for more detailed explanations of how URIs and other parameters are formulated.
+
+<!-- ## Creating and retrieving an ArchivesSpace resource record
 
 A JSON template for a resource looks like this:
 
 ```
 
-```
+``` -->
 
-## Creating and retrieving an ArchivesSpace top container record
-
-A JSON template for a top container looks like this. Only xx fields are required
+## Updating a single top container indicator
 
 JSON objects are treated essentially like Python [dictionaries](https://realpython.com/python-dicts/), which means that Python comes with a variety of built-in ways to manipulate the data that comes from ArchivesSpace.
+
+Updating top container indicators (changing box numbers) is straightforward, as the indicator field is non-repeatable string value that is located at the top level of the record (i.e. it is not nested in a list or other dictionary).
+
+To update an existing top container indicator, open a Python interpreter session (be sure you are in the `demo_files` directory) and execute the following code:
+
+```
+>>> import requests
+>>> import json
+>>> import traceback
+>>> import archivesspace_login as as_login
+>>> api_url, headers = as_login.login()
+>>> top_container_uri = <URI of the container to update>
+>>> top_container_json = requests.get(f"{api_url}/{top_container_uri}", headers=headers).json()
+>>> top_container_json['indicator'] = '26'
+>>> post_record = requests.post(f"{api_url}/{top_container_uri}", headers=headers, json=top_container_json).json()
+>>> print(post_record):
+{'status': 'updated', 'uri': }
+>>>
+```
+
+## Preparing data for bulk upload
+
+You can update ArchivesSpace data in bulk with Python using a spreadsheet as input. To update a top container indicator you only need the URI of the top container and the new box number. However, you may also want to include the old box number in your spreadsheet so that you can keep track of the previous value while preparing your data and to have a record if something goes wrong.
+
+The easiest way to retrieve existing data from ArchivesSpace and prepare it for update is via the MySQL database. Retrieving data from the API is much slower, and it takes extra work to manipulate the JSON response into the spreadsheet formats that many archivists rely on use to create and update archival description. Here is a sample query for retrieving top container indicators for two series within a single collection:
+
+```
+select DISTINCT CONCAT('/repositories/', tc.repo_id, '/top_containers/', tc.id) as uri
+	, tc.indicator as old_box_number
+from archival_object ao
+left join archival_object ao2 on ao2.id = ao.parent_id
+left join archival_object ao3 on ao3.id = ao2.parent_id
+left join instance on instance.archival_object_id = ao.id
+left join sub_container sc on sc.instance_id = instance.id
+left join top_container_link_rlshp tclr on tclr.sub_container_id = sc.id
+left join top_container tc on tclr.top_container_id = tc.id
+LEFT JOIN enumeration_value ev2 on ev2.id = tc.type_id
+where ao.root_record_id = 4869
+and (ao.parent_id = 2012449 or ao2.parent_id = 2012461)
+and tc.id is not null
+ORDER BY CAST(tc.indicator AS UNSIGNED)
+```
+
+After running this query you can export the results as a CSV. Open the file and add a column called 'new_box_number'. Then you can fill in the column with the new box number. Save the CSV file.
+
+## Updating top container indicators in bulk
+
+Opening your CSV file and using it to update multiple top container indicators takes only a few more lines of code than the previous example. To perform the update, import your modules, connect to the ArchivesSpace API, and execute the following code in a Python interpreter:
+
+```
+>>> with open('C:\\Username\\Path\\To\\File.csv', 'r', encoding='utf-8') as csvfile:
+...		csvreader = csv.reader(csvfile)
+...		next(csvreader, None)
+...		for row in csvreader:
+...			top_container_uri = row[0]
+...			new_box_number = row[2]
+...			try:
+...				top_container_json = requests.get(f"{api_url}/{top_container_uri}", headers=headers).json()
+...				top_container_json['indicator'] = new_box_number
+...				post_record = requests.post(f"{api_url}/{top_container_uri}", headers=headers, json=top_container_json).json()
+...				print(post_record)
+...			except:
+...				print(traceback.format_exc())
+...				continue
+...
+<OUTPUT>
+>>>
+```
+
+This code is also saved in the `update_top_container_indicator.py` file so it can be run from the Anaconda Prompt. Be aware that this code requires that the top container URI be in the first column of the spreadsheet, the old box number in the second column, and the new box number in the third. There are other methods which rely on a column title to look up the values, but the method above is slightly more straightforward for beginners.
+
+## Creating and updating subrecords
+
+<!-- extent types -->
+
+## Creating and updating notes
+
+<!-- scope and content notes -->
+
+<!-- 
 
 One challenge in working with ArchivesSpace JSON objects is that they are frequently nested. It is helpful to keep the following in mind:
 
@@ -106,16 +214,13 @@ The obvious advantage of the ArchivesSpace API is that it enables users to creat
 
 ## Retrieving ArchivesSpace data with MySQL
 
-The fastest and most straightforward way to retrieve data from ArchivesSpace is via the MySQL database. Retrieving data from the API is much slower, and it takes extra work to manipulate the JSON response into the spreadsheet formats that many archivists rely on use to create and update archival description.
-<!-- ## Using the `aspace_tools` package to perform CRUD actions against the API and database
-
- -->
+<-- ## Using the `aspace_tools` package to perform CRUD actions against the API and database-->
 
 ## Safety Tips
 
 Creating and updating records via the ArchivesSpace API is fast and convenient, but can be dangerous. There is no undo button, and problems can have cascading effects. In order to prevent errors that may take significant effort to identify and remedy, please follow these guidelines:
 
-* Before running any updates against the API, have another staff member review your:
+* When running any updates against the API, have another staff member review your:
 	* Input data
 	* Code
 	* Output
