@@ -1,27 +1,32 @@
 # api_environment_setup
 
-A tutorial for setting up a Python environment on a Windows PC, connecting to the ArchivesSpace API, and making bulk updates using a spreadsheet as input. Also a brief mention of retrieving data from the ArchivesSpace MySQL database, and a note on safety tips.
+This tutorial will walk you through:
+
+* Setting up a Python environment on your local computer
+* Connecting to the ArchivesSpace API
+* Retrieving top container data for a collection
+* Updating top container indicators in bulk using a spreadsheet as input.
 
 To get started, clone or download this repository.
 
 ## Requirements
 
-* Miniconda
+* Miniconda (Python 3.7+)
 * Access to ArchivesSpace API and/or MySQL database
 <!-- * `aspace_tools` package -->
 
 ## Why Miniconda?
 
-While many computers come with Python built-in, it is often many versions behind the latest release. Also, installing or upgrading Python packages in the system installation of Python can cause unexpected conflicts and errors within existing programs. It is highly recommended that you use a virtual environment to avoid these issues. 
+While many computers come with Python built-in, it is often many versions behind the latest release. Installing or upgrading Python packages in the system installation of Python can also cause unexpected conflicts and errors within existing programs. It is highly recommended that you use a virtual environment to avoid these issues.
 
-There are many varieties of virtual environments, each with their own benefits and drawbacks. Anaconda and Miniconda are frequently used by data scientists and others who work with data (such as archivists!), and they come with frequently-used data processing packages preinstalled. Miniconda is a lightweight version of Anaconda, and both are based on `conda`. A good intro to `conda` can be found [here](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307).
+There are many varieties of virtual environments, each with their own benefits and drawbacks. Anaconda and Miniconda are frequently used by those-who-work-with-data (including archivists!), and they come with frequently-used data processing packages preinstalled. Miniconda is a lightweight version of Anaconda, and both are based on `conda`. A good intro to `conda` can be found [here](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307).
 
 ## Installing Miniconda
 
 * If you already have the full version of Anaconda, [uninstall](https://docs.anaconda.com/anaconda/install/uninstall/) it
 * [Download](https://docs.conda.io/en/latest/miniconda.html) Miniconda
-* Follow the setup instructions. Store the program in your home directory (i.e. C:\Users\your_username\Miniconda3). If you choose, per the installer's recommendations, not to add Miniconda to your PATH, you will need to use the Anaconda Prompt or Anaconda Powershell to interact with the interpreter and run scripts from the command line.
-* After the program is installed, click on the Windows start menu and open the Anaconda Prompt or Anaconda Powershell.
+* Click on the installer and follow the on-screen setup instructions. Store the program in your home directory (i.e. `C:\Users\your_username\Miniconda3`, `/Users/your_username/Miniconda3`). On Windows, if you choose, per the installer's recommendations, not to add Miniconda to your PATH, you will need to use the Anaconda Prompt or Anaconda Powershell to interact with the interpreter and run scripts from the command line. The Mac installer should automatically make Miniconda your default Python installation.
+* After the program is installed, click on the Windows start menu and open the Anaconda Prompt or Anaconda Powershell. If using a Mac, open a Terminal window.
 <!-- * To further check your installation, type `echo $PATH` into the prompt. You should see some Miniconda-related directories.
  -->
 
@@ -33,30 +38,31 @@ To see what Python packages are currently installed, type `conda list` into the 
 
 ## Working in the Python interpreter
 
-Open the Anaconda Prompt and enter `python`. This will open the Python interpreter. To check the location of your Python installation, enter `import sys`. Then, enter `sys.executable`. You should see the path to your Miniconda Python executable.
+Open the Anaconda Prompt or Terminal and enter `python`. This will open the Python interpreter. To check the location of your Python installation, enter `import sys`. Then, enter `sys.executable`. You should see the path to your Miniconda Python executable. To close the Python interpreter and return to the prompt, enter `quit()`.
 
-To close the Python interpreter and return to the prompt, enter `quit()`
+On a Mac you can also type `which python` into the Terminal to make sure that you are using the Miniconda distribution.
 
 ## Running Python scripts from the command line
 
-You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, open the Anaconda Prompt/Powershell and do the following:
+You can also run `.py` files from the Anaconda Prompt. To run the `hello_world.py` file, open the Anaconda Prompt/Powershell and enter the following:
 
 ```
-user$ cd C:\Users\your_username\path\to\api_environment_setup\demo_files
-demo_files user$ python hello_world.py
+#on a Mac this should be something like cd /Users/your_username/path/to/api_environment_setup/demo_files
+$ cd C:\Users\your_username\path\to\api_environment_setup\demo_files
+demo_files $ python hello_world.py
 
 ...stuff happens...
 
-demo_files user$
+demo_files $
 ```
 
 ## Connecting to ArchivesSpace via `requests`
 
-To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory (use the ArchivesSpace TEST API URL for the api_url value - ask Alicia if you don't know the URL). Then open the Anaconda Prompt/Powershell (be sure that you are still in the `demo_files` directory before you open the interpreter) and do the following:
+To connect to the ArchivesSpace API, you first need to enter your credentials into the `config.json` file included in the `demo_files` directory. Then open the Anaconda Prompt/Powershell or Terminal (be sure that you are still in the `demo_files` directory before you open the interpreter) and do the following:
 
 ```
-demo_files user$ python
-Python 3.7.3 (default, Mar 27 2019, 16:54:48) 
+demo_files $ python
+Python 3.7.3 (default, Mar 27 2019, 16:54:48)
 [Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda custom (64-bit) on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import json
@@ -69,6 +75,8 @@ https://archivesspace.university.edu/api
 >>> headers
 LONGSTRINGOFNUMBERSANDLETTERSREPRESENTINGAUTHKEY
 ```
+
+The `import archivesspace_login as as_login` line imports the `archivesspace_login.py` file into the Python interpreter. This file contains a `login()` function which you can run to log in to the API. The API URL and the authentication key are stored in the `api_url` and `headers` variables so that they can be used in other parts of the script.
 
 If your login credentials are invalid you should be prompted to enter them again into the interpreter. If your login credentials were accepted, you can send your first API request - to retrieve a top container JSON record - by entering the following into the Python interpreter:
 
@@ -146,7 +154,7 @@ To update an existing top container indicator, open a Python interpreter session
 
 You can update ArchivesSpace data in bulk with Python using a spreadsheet as input. To update a top container indicator you only need the URI of the top container and the new box number. However, you may also want to include the old box number in your spreadsheet so that you can keep track of the previous value while preparing your data and to have a record if something goes wrong.
 
-The easiest way to retrieve existing data from ArchivesSpace and prepare it for update is via the MySQL database. Retrieving data from the API is much slower, and it takes extra work to manipulate the JSON response into the spreadsheet formats that many archivists rely on use to create and update archival description. Here is a sample query for retrieving top container indicators for two series within a single collection:
+The easiest way to retrieve existing data from ArchivesSpace and prepare it for update is via the MySQL database. Retrieving data from the API is often slower, and it takes extra processing to manipulate the JSON response into the spreadsheet formats that many archivists rely on use to create and update archival description. Here is a sample query for retrieving top container indicators for two series within a single collection:
 
 ```
 select DISTINCT CONCAT('/repositories/', tc.repo_id, '/top_containers/', tc.id) as uri
@@ -159,17 +167,34 @@ left join sub_container sc on sc.instance_id = instance.id
 left join top_container_link_rlshp tclr on tclr.sub_container_id = sc.id
 left join top_container tc on tclr.top_container_id = tc.id
 LEFT JOIN enumeration_value ev2 on ev2.id = tc.type_id
-where ao.root_record_id = 4869
-and (ao.parent_id = 2012449 or ao2.parent_id = 2012461)
+where ao.root_record_id = 11718
 and tc.id is not null
 ORDER BY CAST(tc.indicator AS UNSIGNED)
 ```
 
 After running this query you can export the results as a CSV. Open the file and add a column called 'new_box_number'. Then you can fill in the column with the new box number. Save the CSV file.
 
+## Retrieving top container data via the API
+
+There are also a few ways to retrieve top container data via the API. This are especially useful if you do not have access to the ArchivesSpace database. The most efficient method for retrieving all top containers in a collection is to use the [`repositories/:repo_id/top_containers/search`](http://archivesspace.github.io/archivesspace/api/#search-for-top-containers) endpoint. To retrieve a list of top containers for a given resource, import your modules and enter the following into the Python interpreter:
+
+```
+>>> resource_uri = '/repositories/12/resources/11718'
+>>> query = f'{{"query":{{"jsonmodel_type": "field_query", "field": "collection_uri_u_sstr", "value": "{resource_uri}", "literal":true}}}}'
+>>> tc_search = requests.get(api_url + "/repositories/12/top_containers/search?filter=" + query, headers=headers).json()
+>>> tc_data = [[item['id'], item['json']['indicator']] for item in tc_search['response']['docs']
+                if `response` in tc_search]
+>>> pprint.pprint(tc_data)
+
+```
+
+The full version of this code is saved in the `retrieve_top_container_data.py` file so it can be run from the Anaconda Prompt or Terminal. It will output a spreadsheet with two columns: the top container URI will be in the first column and the current box number will be in the second column. It will also have a third column "new_box_number", where you can enter the new box numbers.
+
+**NOTE**: There is a [`/repositories/:repo_id/resources/:id/top_containers`](http://archivesspace.github.io/archivesspace/api/#get-top-containers-linked-to-a-published-resource-and-published-archival-ojbects-contained-within) endpoint which retrieves similar data, but it is very slow when run against a large resource, as it essentially just loops through all of the archival object records and pulls top container data. It also, as of version 2.7.1, is a bit buggy.
+
 ## Updating top container indicators in bulk
 
-Opening your CSV file and using it to update multiple top container indicators takes only a few more lines of code than the previous example. To perform the update, import your modules, connect to the ArchivesSpace API, and execute the following code in a Python interpreter:
+Opening your CSV file and using it to update multiple top container indicators takes only a few more lines of code than the example above which updates a single indicator. To perform the update, import your modules, connect to the ArchivesSpace API, and execute the following code in a Python interpreter:
 
 ```
 >>> with open('C:\\Username\\Path\\To\\File.csv', 'r', encoding='utf-8') as csvfile:
@@ -191,17 +216,20 @@ Opening your CSV file and using it to update multiple top container indicators t
 >>>
 ```
 
-This code is also saved in the `update_top_container_indicator.py` file so it can be run from the Anaconda Prompt. Be aware that this code requires that the top container URI be in the first column of the spreadsheet, the old box number in the second column, and the new box number in the third. There are other methods which rely on a column title to look up the values, but the method above is slightly more straightforward for beginners.
+The full version of this code is also saved in the `update_top_container_indicator.py` file so it can be run from the Anaconda Prompt. Be aware that this code requires that the top container URI be in the first column of the spreadsheet, the old box number in the second column, and the new box number in the third. There are other methods which rely on a column title to look up the values, but the method above is slightly more straightforward for beginners.
 
 ## Creating and updating subrecords
 
-<!-- extent types -->
+> Coming soon: updating folder numbers!
 
-## Creating and updating notes
+<!--
+Updating folder numbers in ArchivesSpace is a somewhat different process. Folder information is usually stored in instance subrecords in archival object or resource records. -->
+
+<!-- ## Creating and updating notes -->
 
 <!-- scope and content notes -->
 
-<!-- 
+<!--
 
 One challenge in working with ArchivesSpace JSON objects is that they are frequently nested. It is helpful to keep the following in mind:
 
@@ -223,7 +251,7 @@ Creating and updating records via the ArchivesSpace API is fast and convenient, 
 * When running any updates against the API, have another staff member review your:
 	* Input data
 	* Code
-	* Output
+	* Test output
 * __ALWAYS__ run your updates in TEST or DEV before running in production
 * Keep all JSON backups, log files, input data, and code. Organize your files by project/task. Document any and all actions you take. Due to the lack of an "edit history" in ArchivesSpace, it can be difficult to trace the source of data quality issues.
 
