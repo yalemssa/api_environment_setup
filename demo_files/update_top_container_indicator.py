@@ -9,7 +9,7 @@ import requests
 import archivesspace_login as as_login
 
 
-def update_indicators(row):
+def update_indicators(api_url, headers, row):
 	#this is the first row of the spreadsheet
 	top_container_uri = row[0]
 	#this is the third row of the spreadsheet
@@ -32,7 +32,7 @@ def main():
 		#skips the header row
 		next(csvreader, None)
 		for row in csvreader:
-			update_indicators(row)
+			update_indicators(api_url, headers, row)
 
 
 if __name__ == "__main__":
