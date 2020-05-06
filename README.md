@@ -1,15 +1,17 @@
-# api_environment_setup
+# Getting started with the ArchivesSpace API
 
-This tutorial will walk you through:
+This tutorial introduces the ArchivesSpace API by way of a common archival data cleanup task: renumbering containers. In the following sections you will learn how to:
 
-* Setting up a Python environment on your local computer
-* Connecting to the ArchivesSpace API
-* Retrieving top container data for a collection
-* Updating top container indicators in bulk using a spreadsheet as input.
+* Set up a Python environment on your local computer
+* Connect to the ArchivesSpace API
+* Retrieve top container data for a collection
+* Update top container indicators in bulk using a spreadsheet as input.
 
 To get started, clone or download this repository.
 
-[![Demo](https://img.youtube.com/vi/FiHwYWIRurQ/maxresdefault.jpg)](https://youtu.be/FiHwYWIRurQ)
+Demo:
+
+[![Demo](https://img.youtube.com/vi/FiHwYWIRurQ/default.jpg)](https://youtu.be/FiHwYWIRurQ)
 
 ## Requirements
 
