@@ -10,6 +10,7 @@ This tutorial introduces the ArchivesSpace API by way of a common archival data 
 To get started, clone or download this repository.
 
 Clone or download repo demo:
+
 [![Demo](https://img.youtube.com/vi/FiHwYWIRurQ/hqdefault.jpg)](https://youtu.be/FiHwYWIRurQ)
 
 ## Requirements
@@ -34,6 +35,7 @@ There are many varieties of virtual environments, each with their own benefits a
  -->
 
 Download and install Miniconda demo:
+
 [![Demo](https://img.youtube.com/vi/YLwgOZwZUO4/hqdefault.jpg)](https://youtu.be/YLwgOZwZUO4)
 
 Open the Anaconda Prompt or Terminal and enter `python`. This will open the interactive Python interpreter. To check the location of your Python installation, enter `import sys`. Then, enter `sys.executable`. You should see the path to your Miniconda Python executable. To close the Python interpreter and return to the prompt, enter `quit()`.
@@ -43,6 +45,7 @@ To see what Python packages are currently installed, type `conda list` into the 
 On a Mac you can also type `which python` into the Terminal to make sure that you are using the Miniconda distribution.
 
 Start Python, check distribution demo:
+
 [![Demo](https://img.youtube.com/vi/8SqU1DUBndA/hqdefault.jpg)](https://youtu.be/8SqU1DUBndA)
 
 ## Running Python scripts from the command line; imports
@@ -60,6 +63,7 @@ demo_files $
 ```
 
 Running scripts from the command line demo:
+
 [![Demo](https://img.youtube.com/vi/eZvzANBTap8/hqdefault.jpg)](https://youtu.be/eZvzANBTap8)
 
 ## Connecting to ArchivesSpace via `requests`
@@ -85,6 +89,7 @@ LONGSTRINGOFNUMBERSANDLETTERSREPRESENTINGAUTHKEY
 The `import archivesspace_login as as_login` line imports the `archivesspace_login.py` file into the Python interpreter. This file contains a `login()` function which you can run to log in to the API. The API URL and the authentication key are stored in the `api_url` and `headers` variables so that they can be used in other parts of the script.
 
 Connect to ArchivesSpace API demo:
+
 [![Demo](https://img.youtube.com/vi/ehBSp4aLx-s/hqdefault.jpg)](https://youtu.be/ehBSp4aLx-s)
 
 If your login credentials are invalid you should be prompted to enter them again into the interpreter. If your login credentials were accepted, you can send your first API request - to retrieve a top container JSON record - by entering the following into the Python interpreter:
@@ -131,6 +136,7 @@ You will notice that the JSON response corresponds to the fields and values that
 Top containers and all other "top level" ArchivesSpace records can be accessed via the API by unique URIs, which correspond with their database identifiers (a very brief overview of "top level" records and the AS data model can be found in the second section of this [article](https://journal.code4lib.org/articles/14443), or [here](https://github.com/archivesspace/tech-docs/blob/backend_docs/architecture/backend/database.md)). Top containers are scoped to repositories, and so the URI also includes the repository number, for instance `/repositories/12/top_containers/32918`. See the ArchivesSpace API documentation for more detailed explanations of how URIs and other parameters are formulated.
 
 Retrieve single record demo:
+
 [![Demo](https://img.youtube.com/vi/3PF1sYrnfCM/hqdefault.jpg)](https://youtu.be/3PF1sYrnfCM)
 
 ## Updating a single top container indicator
@@ -151,6 +157,7 @@ To update an existing top container indicator, open a Python interpreter session
 ```
 
 Update single record demo:
+
 [![Demo](https://img.youtube.com/vi/WyFmrgu48fU/hqdefault.jpg)](https://youtu.be/WyFmrgu48fU)
 
 ## Preparing data for bulk upload
@@ -196,9 +203,11 @@ There are also a few ways to retrieve top container data via the API. This are e
 The full version of this code is saved in the `retrieve_top_container_data.py` file so it can be run from the Anaconda Prompt or Terminal. It will output a spreadsheet with two columns: the top container URI will be in the first column and the current box number will be in the second column. It will also have a third column "new_box_number", where you can enter the new box numbers.
 
 Retrieve containers demo:
+
 [![Retrieve Containers Demo](https://img.youtube.com/vi/kpy3wE37y-4/hqdefault.jpg)](https://youtu.be/kpy3wE37y-4)
 
 Update numbers in spreadsheet demo:
+
 [![Fix Numbers Demo](https://img.youtube.com/vi/oC3A3WxmulU/hqdefault.jpg)](https://youtu.be/oC3A3WxmulU)
 
 **NOTE**: There is a [`/repositories/:repo_id/resources/:id/top_containers`](http://archivesspace.github.io/archivesspace/api/#get-top-containers-linked-to-a-published-resource-and-published-archival-ojbects-contained-within) endpoint which retrieves similar data, but it is very slow when run against a large resource, as it essentially just loops through all of the archival object records and pulls top container data. It also, as of version 2.7.1, is a bit buggy.
@@ -230,6 +239,7 @@ Opening your CSV file and using it to update multiple top container indicators t
 The full version of this code is also saved in the `update_top_container_indicator.py` file so it can be run from the Anaconda Prompt. Be aware that this code requires that the top container URI be in the first column of the spreadsheet, the old box number in the second column, and the new box number in the third.
 
 Updating containers in bulk demo:
+
 [![Demo](https://img.youtube.com/vi/yB1Et5EcW20/hqdefault.jpg)](https://youtu.be/yB1Et5EcW20)
 
 ## Creating and updating subrecords
