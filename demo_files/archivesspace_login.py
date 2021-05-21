@@ -2,6 +2,7 @@
 
 import json
 import requests
+import traceback
 
 
 def send_login_request(url=None, username=None, password=None):
@@ -20,11 +21,13 @@ def send_login_request(url=None, username=None, password=None):
             return (url, h)
         else:
             print('Login failed! Check credentials and try again.')
+	    print(traceback.format_exc())
             #try again
             u, heads = login()
             return u, heads
     except:
         print('Login failed! Check credentials and try again!')
+	print(traceback.format_exc())
         u, heads = send_login_request()
         return u, heads
 
