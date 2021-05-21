@@ -21,18 +21,18 @@ def send_login_request(url=None, username=None, password=None):
             return (url, h)
         else:
             print('Login failed! Check credentials and try again.')
-	    print(traceback.format_exc())
+            print(traceback.format_exc())
             #try again
             u, heads = login()
             return u, heads
     except:
         print('Login failed! Check credentials and try again!')
-	print(traceback.format_exc())
+        print(traceback.format_exc())
         u, heads = send_login_request()
         return u, heads
 
 
 def login():
-	'''Loads the configuration file and logs in to the ArchivesSpace API, returning the API URL and an authorization key to be used in requests'''
-	config_file = json.load(open("config.json"))
-	return send_login_request(url=config_file['api_url'], username=config_file['api_username'], password=config_file['api_password'])
+    '''Loads the configuration file and logs in to the ArchivesSpace API, returning the API URL and an authorization key to be used in requests'''
+    config_file = json.load(open("config.json"))
+    return send_login_request(url=config_file['api_url'], username=config_file['api_username'], password=config_file['api_password'])

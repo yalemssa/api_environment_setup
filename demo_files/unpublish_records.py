@@ -38,6 +38,8 @@ def unpublish_recs(api_url, headers, row):
                 logging.debug(f"Could not update {record_uri}")
                 logging.debug(record_update.get('error'))
                 print(record_update)
+            else:
+                logging.debug(record_update)
     except Exception as exc:
         logging.debug(record_uri)
         logging.exception('Error: ')

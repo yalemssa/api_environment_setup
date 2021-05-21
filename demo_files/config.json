@@ -2,7 +2,7 @@
 	"api_url": "",
 	"api_username": "",
 	"api_password": "",
-	"input_csv": "test_archivesspace_update.csv",
+	"input_csv": "test_unpublish.csv",
 	"output_csv": "test_archivesspace_output.csv",
 	"backup_directory": "test_archivesspace_backup"
 }
