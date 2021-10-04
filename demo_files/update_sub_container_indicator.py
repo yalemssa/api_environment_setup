@@ -18,6 +18,10 @@ def update_indicators(api_url, headers, row):
 	new_folder_number = row[7]
 	try:
 		ao_json = requests.get(f"{api_url}/{archival_object_uri}", headers=headers).json()
+		if 'error' in ao_json:
+			print(uri)
+			print(row)
+			print(ao_json)
 		for instance in ao_json['instances']:
 			if instance.get('instance_type') == 'mixed_materials':
 				if instance.get('sub_container').get('indicator_2') == old_folder_number:
@@ -27,6 +31,8 @@ def update_indicators(api_url, headers, row):
 	# this blanket except statement is not what you'd want to do if you were distributing this program, but 
 	# works for this example since you will want to see what your errors are in order to fix them
 	except Exception:
+		print(uri)
+		print(row)
 		print(traceback.format_exc())
 
 def main():

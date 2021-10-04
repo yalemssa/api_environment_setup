@@ -244,10 +244,69 @@ Updating containers in bulk demo:
 
 ## Creating and updating subrecords
 
-> Coming soon: updating folder numbers!
+### Updating folder numbers
 
-<!--
-Updating folder numbers in ArchivesSpace is a somewhat different process. Folder information is usually stored in instance subrecords in archival object or resource records. -->
+Updating folder numbers in ArchivesSpace uses a different process than updating box numbers. Sub-container information is stored in instance subrecords in archival object or resource records. This means that the records cannot be accessed directly via their own URIs, but rather via the URI of the archival object or resource record to which they are linked. 
+
+Below is an example of an archival object JSON record with two instances. One of these instances has a `sub_container` subrecord, which is where folder numbers are stored. Note that some fields have been removed for the sake of clarity.
+
+```
+{'create_time': '2015-06-01T19:16:49Z',
+ 'created_by': 'admin',
+ 'dates': [{'begin': '1991-08-14',
+            'create_time': '2015-06-01T19:16:49Z',
+            'created_by': 'admin',
+            'date_type': 'single',
+            'expression': '1991 August 14',
+            'jsonmodel_type': 'date',
+            'label': 'creation',
+            'last_modified_by': 'admin',
+            'lock_version': 0,
+            'system_mtime': '2018-02-09T20:28:50Z',
+            'user_mtime': '2015-06-01T19:16:49Z'}],
+ 'display_string': 'Beinecke, William S., 1991 August 14',
+ 'extents': [],
+ 'instances': [{'create_time': '2015-06-01T19:16:49Z',
+                'created_by': 'admin',
+                'instance_type': 'mixed_materials',
+                'is_representative': False,
+                'jsonmodel_type': 'instance',
+                'last_modified_by': 'admin',
+                'lock_version': 0,
+                'sub_container': {'create_time': '2015-06-01T19:16:49Z',
+                                  'created_by': 'admin',
+                                  'indicator_2': '5',
+                                  'jsonmodel_type': 'sub_container',
+                                  'last_modified_by': 'admin',
+                                  'lock_version': 0,
+                                  'system_mtime': '2015-06-01T19:16:49Z',
+                                  'top_container': {'ref': '/repositories/12/top_containers/96186'},
+                                  'type_2': 'folder',
+                                  'user_mtime': '2015-06-01T19:16:49Z'},
+                'system_mtime': '2015-06-01T19:16:49Z',
+                'user_mtime': '2015-06-01T19:16:49Z'}],
+ 'jsonmodel_type': 'archival_object',
+ 'last_modified_by': 'admin',
+ 'level': 'file',
+ 'parent': {'ref': '/repositories/12/archival_objects/815180'},
+ 'publish': True,
+ 'repository': {'ref': '/repositories/12'},
+ 'resource': {'ref': '/repositories/12/resources/2623'},
+ 'system_mtime': '2021-05-04T18:12:01Z',
+ 'title': 'Beinecke, William S.',
+ 'uri': '/repositories/12/archival_objects/815185',
+ 'user_mtime': '2015-06-01T19:16:49Z'}
+```
+
+The `get_folder_numbers.sql` and `update_sub_container_indicator.py` files can be used together to retrieve and update archival object instance records.
+
+#### Retrieving folder data via MySQL
+
+Run the `get_folder_numbers.sql` query in an SQL client to retrieve folder numbers for a given collection or series. Add the new folder number in column H.
+
+#### Running the `update_sub_container_indicator.py` file
+
+Run the `update_sub_container_indicator.py` script using the same process
 
 <!-- ## Creating and updating notes -->
 
