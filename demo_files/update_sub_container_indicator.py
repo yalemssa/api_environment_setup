@@ -19,7 +19,7 @@ def update_indicators(api_url, headers, row):
 	try:
 		ao_json = requests.get(f"{api_url}/{archival_object_uri}", headers=headers).json()
 		if 'error' in ao_json:
-			print(uri)
+			print(archival_object_uri)
 			print(row)
 			print(ao_json)
 		for instance in ao_json['instances']:
@@ -31,19 +31,23 @@ def update_indicators(api_url, headers, row):
 	# this blanket except statement is not what you'd want to do if you were distributing this program, but 
 	# works for this example since you will want to see what your errors are in order to fix them
 	except Exception:
-		print(uri)
+		print(archival_object_uri)
 		print(row)
 		print(traceback.format_exc())
 
 def main():
 	api_url, headers = as_login.login()
 	csvpath = input('Please enter path to CSV file: ')
-	with open(csvpath, 'r', encoding='utf-8') as csvfile:
+	with open(csvpath, 'r', encoding='latin-1') as csvfile:
 		csvreader = csv.reader(csvfile)
 		#skips the header row
 		next(csvreader, None)
-		for row in csvreader:
-			update_indicators(api_url, headers, row)
+		try:
+			for row in csvreader:
+				update_indicators(api_url, headers, row)
+		except Exception:
+			print(row)
+			print(traceback.format_exc())
 
 
 if __name__ == "__main__":
